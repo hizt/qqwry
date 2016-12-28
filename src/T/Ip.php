@@ -256,16 +256,19 @@ class Ip
     {
         $state = $city = $area = $this->unknown;
         if (preg_match('/^(.+省)?(新疆|内蒙古|宁夏|西藏|广西|香港|澳门)?(.+市)?(.+市)?(.+(县|区))?/', $location, $preg)) {
-            if (count($preg) == 4) {
+            if (count($preg) == 4) {        //匹配 "浙江省杭州市"
                 $state = $preg[1] ? $preg[1] : ($preg[2] ? $preg[2] : $preg[3]);
                 $city = $preg[3];
-            } else if (count($preg) == 7) {
+            } else if (count($preg) == 7) { //匹配 "浙江省杭州市江干区"
                 $state = $preg[1] ? $preg[1] : ($preg[2] ? $preg[2] : $preg[3]);
                 $city = $preg[3];
                 $area = $preg[5];
-            } else if(count($preg) == 3) {
+            } else if(count($preg) == 3) { //匹配 "香港"
                 $state = $preg[1] ? $preg[1] : $preg[2];
                 $city = $state;
+            }
+            else if(count($preg) == 2){  //匹配 "浙江省"
+                $state = $preg[1] ? $preg[1] : $this->unknown;
             }
         }
         return [$state, $city, $area];
